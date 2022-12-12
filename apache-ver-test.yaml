@@ -1,0 +1,30 @@
+id: apache-detected
+
+info:
+  name: Apache detected
+  author: koti
+  severity: info
+  description: Some PHP servers have the version on the response header. Useful when you need to find specific CVEs on your targets.
+  tags: tech,apache-detect
+
+requests:
+  - method: GET
+    path:
+      - "{{BaseURL}}"
+
+    matchers-condition: and
+    matchers:
+      - type: regex
+        part: header
+        regex:
+          - '(Apache/[0-9.]+|Apache)'
+
+      - type: status
+        status:
+          - 200
+
+    extractors:
+      - type: regex
+        part: header
+        regex:
+          - '(Apache/[0-9.]+|Apache)'
